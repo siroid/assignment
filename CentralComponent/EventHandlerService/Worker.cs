@@ -14,7 +14,7 @@ public class Worker : BackgroundService
         var config = new ConsumerConfig
         {
             GroupId = "consumer-group",
-            BootstrapServers = "localhost:9092",
+            BootstrapServers = "cdkafka:9092",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 

@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CentralComponent", "Central
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandlerService", "CentralComponent\EventHandlerService\EventHandlerService.csproj", "{CC2488AC-C046-4189-9F2F-11AE443AEF6C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StorageMiddleware", "StorageMiddleware", "{11E514A0-5A5C-4239-885F-15CCE1E652FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageConnector", "StorageMiddleware\StorageConnector\StorageConnector.csproj", "{166FD825-1AC3-4616-803C-A540F51527EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{CC2488AC-C046-4189-9F2F-11AE443AEF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC2488AC-C046-4189-9F2F-11AE443AEF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC2488AC-C046-4189-9F2F-11AE443AEF6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166FD825-1AC3-4616-803C-A540F51527EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166FD825-1AC3-4616-803C-A540F51527EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166FD825-1AC3-4616-803C-A540F51527EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166FD825-1AC3-4616-803C-A540F51527EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +40,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CC2488AC-C046-4189-9F2F-11AE443AEF6C} = {319F1727-7BD7-45BD-B355-5D581FDF866E}
+		{166FD825-1AC3-4616-803C-A540F51527EA} = {11E514A0-5A5C-4239-885F-15CCE1E652FD}
 	EndGlobalSection
 EndGlobal

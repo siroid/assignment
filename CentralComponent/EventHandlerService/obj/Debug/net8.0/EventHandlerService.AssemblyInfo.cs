@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EventHandlerService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b637d8d0004faaa8f98e11c0d3fda23142fbbe25")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+622e6729873f87e1aad3d7e0c7162d34266ae03a")]
 [assembly: System.Reflection.AssemblyProductAttribute("EventHandlerService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EventHandlerService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

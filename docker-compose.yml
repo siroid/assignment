@@ -16,7 +16,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   robotic-arm-service:
@@ -32,4 +32,17 @@ services:
       KAFKA_BROKER: kafka:9092
     restart: always
 
-    
+  event-handler-service:
+    image: event-handler-service
+    build:
+      context: ./CentralComponent/EventHandlerService  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile  # Name of the Dockerfile (adjust if different)
+    depends_on:
+      - kafka
+    ports:
+      - "8081:80"  # Adjust the port mapping as needed
+    environment:
+      KAFKA_BROKER: kafka:9092
+    restart: always
+
+       
