@@ -1,6 +1,7 @@
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/bin/Debug/net8.0/StorageConnector.deps.json
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/bin/Debug/net8.0/StorageConnector.dll
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/bin/Debug/net8.0/StorageConnector.pdb
+/Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/obj/Debug/net8.0/StorageConnector.csproj.AssemblyReference.cache
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/obj/Debug/net8.0/StorageConnector.GeneratedMSBuildEditorConfig.editorconfig
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/obj/Debug/net8.0/StorageConnector.AssemblyInfoInputs.cache
 /Users/isyroid/Documents/Advantest/assignment/StorageMiddleware/StorageConnector/obj/Debug/net8.0/StorageConnector.AssemblyInfo.cs

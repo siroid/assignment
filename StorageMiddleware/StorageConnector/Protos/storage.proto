@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "StorageConnector";
+
+package storage;
+
+service StorageService {
+    rpc GetData (GetDataRequest) returns (GetDataResponse);
+    rpc CreateData (CreateDataRequest) returns (CreateDataResponse);
+    rpc UpdateData (UpdateDataRequest) returns (UpdateDataResponse);
+    rpc DeleteData (DeleteDataRequest) returns (DeleteDataResponse);
+}
+
+message GetDataRequest {
+    string id = 1;
+}
+
+message GetDataResponse {
+    string data = 1;
+}
+
+message CreateDataRequest {
+    string data = 1;
+}
+
+message CreateDataResponse {
+    bool success = 1;
+}
+
+message UpdateDataRequest {
+    string id = 1;
+    string data = 2;
+}
+
+message UpdateDataResponse {
+    bool success = 1;
+}
+
+message DeleteDataRequest {
+    string id = 1;
+}
+
+message DeleteDataResponse {
+    bool success = 1;
+}

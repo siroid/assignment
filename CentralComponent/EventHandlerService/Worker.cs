@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using StorageConnector;
 
 namespace EventHandlerService;
 
@@ -6,11 +7,13 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly IConsumer<Null, string> _consumer;
+    private readonly IStorageConnector _storageConnector;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IStorageConnector storageConnector)
     {
         _logger = logger;
-
+        _storageConnector = storageConnector;
+        
         var config = new ConsumerConfig
         {
             GroupId = "consumer-group",
