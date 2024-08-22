@@ -1,0 +1,40 @@
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore project files
+*.csproj
+*.vbproj
+*.nuproj
+*.vcxproj
+*.props
+*.targets
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore log files
+*.log
+
+# Ignore application config files
+appsettings*.json
+
+# Ignore secrets file
+secrets.json
+
+# Ignore NuGet packages
+*.nupkg
+# Uncomment if you have a dedicated NuGet packages directory in your repository
+# packages/
+
+# Ignore .NET SDK-generated files
+project.lock.json
+project.fragment.lock.json
+artifacts/
