@@ -9,7 +9,8 @@
       "EventHandlerService/1.0.0": {
         "dependencies": {
           "Confluent.Kafka": "2.5.2",
-          "Microsoft.Extensions.Hosting": "8.0.0"
+          "Microsoft.Extensions.Hosting": "8.0.0",
+          "StorageConnector": "1.0.0"
         },
         "runtime": {
           "EventHandlerService.dll": {}
@@ -541,6 +542,14 @@
         "dependencies": {
           "System.Text.Encodings.Web": "8.0.0"
         }
+      },
+      "StorageConnector/1.0.0": {
+        "runtime": {
+          "StorageConnector.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -780,6 +789,11 @@
       "sha512": "sha512-OdrZO2WjkiEG6ajEFRABTRCi/wuXQPxeV6g8xvUJqdxMvvuCCEk86zPla8UiIQJz3durtUEbNyY/3lIhS0yZvQ==",
       "path": "system.text.json/8.0.0",
       "hashPath": "system.text.json.8.0.0.nupkg.sha512"
+    },
+    "StorageConnector/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

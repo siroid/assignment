@@ -72,3 +72,5 @@
 /Users/isyroid/Documents/Advantest/assignment/CentralComponent/EventHandlerService/obj/Debug/net8.0/EventHandlerService.pdb
 /Users/isyroid/Documents/Advantest/assignment/CentralComponent/EventHandlerService/obj/Debug/net8.0/EventHandlerService.genruntimeconfig.cache
 /Users/isyroid/Documents/Advantest/assignment/CentralComponent/EventHandlerService/obj/Debug/net8.0/ref/EventHandlerService.dll
+/Users/isyroid/Documents/Advantest/assignment/CentralComponent/EventHandlerService/bin/Debug/net8.0/StorageConnector.dll
+/Users/isyroid/Documents/Advantest/assignment/CentralComponent/EventHandlerService/bin/Debug/net8.0/StorageConnector.pdb

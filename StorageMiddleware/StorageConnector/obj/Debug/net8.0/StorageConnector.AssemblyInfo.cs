@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StorageConnector")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+622e6729873f87e1aad3d7e0c7162d34266ae03a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+800fa2c3b65aef1b675a86d50e3e8ec564cf43d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("StorageConnector")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StorageConnector")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
