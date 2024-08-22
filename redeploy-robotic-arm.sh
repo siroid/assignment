@@ -1,0 +1,1 @@
+docker-compose build robotic-arm-service && docker-compose up -d robotic-arm-service && docker-compose logs -f robotic-arm-service
