@@ -9,14 +9,6 @@ obj/
 *.userosscache
 *.sln.docstates
 
-# Ignore project files
-*.csproj
-*.vbproj
-*.nuproj
-*.vcxproj
-*.props
-*.targets
-
 # Ignore VSCode settings
 .vscode/
 
