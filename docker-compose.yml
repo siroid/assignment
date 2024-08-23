@@ -19,6 +19,23 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+  redis:
+      image: redis:latest
+      ports:
+        - "6379:6379"
+      command: ["redis-server", "--appendonly", "yes"]
+      restart: always
+
+  ignite:
+    image: apacheignite/ignite:latest
+    ports:
+      - "10800:10800"  # Ignite thin client port
+      - "47100:47100"  # Communication SPI port
+      - "47500-47509:47500-47509"  # Discovery SPI ports
+    environment:
+      - OPTION_LIBS=ignite-rest-http,ignite-spring
+    restart: always
+
   robotic-arm-service:
     image: robotic-arm-service
     build:
@@ -50,7 +67,17 @@ services:
     build:
       context: ./StorageMiddlewareApi
       dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - memcached
+      - ignite
     ports:
       - "7000:80"
     restart: always
-       
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MEMCACHED_HOST: memcached
+      MEMCACHED_PORT: 11211
+      IGNITE_HOST: ignite
+      IGNITE_PORT: 10800
