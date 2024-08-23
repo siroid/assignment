@@ -1,3 +1,5 @@
+namespace StorageMiddlewareApi; 
+
 public class Program
 {
     public static void Main(string[] args)
@@ -9,6 +11,6 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<Startup>();
+                webBuilder.UseStartup<StorageMiddlewareApi.Startup>();
             });
 }

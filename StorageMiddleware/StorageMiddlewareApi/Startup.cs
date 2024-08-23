@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+namespace StorageMiddlewareApi;
+
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
@@ -21,7 +23,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGrpcService<StorageService>();
+            endpoints.MapGrpcService<StorageMiddlewareApi.StorageServiceApi>();
         });
     }
 }

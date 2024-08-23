@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\storage.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.27.3" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.65.0" />
     <PackageReference Include="Grpc.Tools" Version="2.65.0">

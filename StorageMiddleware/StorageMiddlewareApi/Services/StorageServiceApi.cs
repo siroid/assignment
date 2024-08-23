@@ -1,37 +1,32 @@
-using System.Threading.Tasks;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using StorageMiddlewareApi;
 
-public class StorageService : Storage.StorageService.StorageServiceBase
+namespace StorageMiddlewareApi;
+
+public class StorageServiceApi : StorageMiddlewareApi.StorageService.StorageServiceBase
 {
-    private readonly ILogger<StorageService> _logger;
-
-    public StorageService(ILogger<StorageService> logger)
-    {
-        _logger = logger;
-    }
-
     public override Task<GetDataResponse> GetData(GetDataRequest request, ServerCallContext context)
     {
-        // Implement logic to get data from Storage Middleware
-        return Task.FromResult(new GetDataResponse { Data = "Some Robotic Arm Info" });
+        // Implement your logic to get data here
+        return Task.FromResult(new GetDataResponse { Data = "Sample Data for ID " + request.Id });
     }
 
     public override Task<CreateDataResponse> CreateData(CreateDataRequest request, ServerCallContext context)
     {
-        // Implement logic to create data in Storage Middleware
+        // Implement your logic to create data here
         return Task.FromResult(new CreateDataResponse { Success = true });
     }
 
     public override Task<UpdateDataResponse> UpdateData(UpdateDataRequest request, ServerCallContext context)
     {
-        // Implement logic to update data in Storage Middleware
+        // Implement your logic to update data here
         return Task.FromResult(new UpdateDataResponse { Success = true });
     }
 
     public override Task<DeleteDataResponse> DeleteData(DeleteDataRequest request, ServerCallContext context)
     {
-        // Implement logic to delete data from Storage Middleware
+        // Implement your logic to delete data here
         return Task.FromResult(new DeleteDataResponse { Success = true });
     }
 }
