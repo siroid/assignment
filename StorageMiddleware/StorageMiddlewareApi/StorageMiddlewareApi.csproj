@@ -24,4 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CacheProvider\CacheProvider.csproj" />
   </ItemGroup>
+    <ItemGroup>
+    <ProjectReference Include="..\StorageAdapters\StorageAdapters.csproj" />
+  </ItemGroup>
 </Project>

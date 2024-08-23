@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CassandraCSharpDriver" Version="3.20.1" />
+    <PackageReference Include="CouchbaseNetClient" Version="3.6.2" />
+    <PackageReference Include="dotnet-etcd" Version="7.1.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
 </Project>

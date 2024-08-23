@@ -36,6 +36,38 @@ services:
       - OPTION_LIBS=ignite-rest-http,ignite-spring
     restart: always
 
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"  # Default port for Cassandra CQL
+    environment:
+      CASSANDRA_CLUSTER_NAME: "Test Cluster"
+      CASSANDRA_NUM_TOKENS: 256
+    restart: always
+
+  etcd:
+    image: bitnami/etcd:latest
+    ports:
+      - "2379:2379"  # Etcd client communication port
+      - "2380:2380"  # Etcd peer communication port
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+    restart: always
+
+  couchbase:
+    image: couchbase:latest
+    ports:
+      - "8091-8094:8091-8094"  # Couchbase web console, REST API, and query services
+      - "11210:11210"  # Couchbase data service port
+    environment:
+      - COUCHBASE_ADMINISTRATOR_USERNAME=Administrator
+      - COUCHBASE_ADMINISTRATOR_PASSWORD=password
+      - COUCHBASE_BUCKET=my_bucket  # Create a default bucket
+    restart: always
+
   robotic-arm-service:
     image: robotic-arm-service
     build:
@@ -69,15 +101,23 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - redis
-      - memcached
       - ignite
+      - cassandra
+      - etcd
+      - couchbase
     ports:
       - "7000:80"
     restart: always
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      MEMCACHED_HOST: memcached
-      MEMCACHED_PORT: 11211
       IGNITE_HOST: ignite
       IGNITE_PORT: 10800
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      ETCD_HOST: etcd
+      ETCD_PORT: 2379
+      COUCHBASE_HOST: couchbase
+      COUCHBASE_PORT: 8091
+      COUCHBASE_USERNAME: Administrator
+      COUCHBASE_PASSWORD: password
