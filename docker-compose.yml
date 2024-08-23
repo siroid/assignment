@@ -74,12 +74,48 @@ services:
       context: ./RoboticArm  # Path to the directory containing the Dockerfile
       dockerfile: Dockerfile  # Name of the Dockerfile (adjust if different)
     depends_on:
-      - kafka
+      - taskcoordinator
     ports:
       - "8080:80"  # Adjust the port mapping as needed
     environment:
       KAFKA_BROKER: kafka:9092
     restart: always
+
+  taskcoordinator:
+    build:
+      context: ./CentralComponent/TaskCoordinatorService
+      dockerfile: Dockerfile
+    image: taskcoordinatorservice:latest
+    container_name: taskcoordinatorservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5001:80"   # Map HTTP port for web traffic
+      - "5005:5005" # Map debugging port
+    depends_on:
+      - kafka
+    networks:
+      - mynetwork
+    command: ["dotnet", "TaskCoordinatorService.dll", "--urls", "http://0.0.0.0:80"]
+
+  monitoring:
+    build:
+      context: ./CentralComponent/MonitoringService
+      dockerfile: Dockerfile
+    image: monitoringservice:latest
+    container_name: monitoringservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5002:80"   # Map HTTP port for web traffic
+      - "5006:5005" # Map debugging port
+    depends_on:
+      - taskcoordinator
+    networks:
+      - mynetwork
+    command: ["dotnet", "MonitoringService.dll", "--urls", "http://0.0.0.0:80"]
 
   event-handler-service:
     image: event-handler-service
@@ -87,7 +123,7 @@ services:
       context: ./CentralComponent/EventHandlerService  # Path to the directory containing the Dockerfile
       dockerfile: Dockerfile  # Name of the Dockerfile (adjust if different)
     depends_on:
-      - kafka
+      - taskcoordinator
     ports:
       - "8081:80"  # Adjust the port mapping as needed
     environment:

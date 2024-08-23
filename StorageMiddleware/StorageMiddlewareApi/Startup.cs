@@ -1,4 +1,5 @@
 using CacheProvider;
+using StorageAdapters;
 
 namespace StorageMiddlewareApi;
 
