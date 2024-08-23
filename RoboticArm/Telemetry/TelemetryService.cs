@@ -6,7 +6,8 @@ namespace RoboticArm
     {
         private readonly ILogger<TelemetryService> _logger;
         private readonly IProducer<Null, string> _producer;
-        private readonly string _topic;
+        private readonly string _telemetryTopic;
+        private readonly string _exceptionsTopic;
 
         public TelemetryService(ILogger<TelemetryService> logger, IConfiguration configuration)
         {
@@ -18,7 +19,8 @@ namespace RoboticArm
             };
 
             _producer = new ProducerBuilder<Null, string>(config).Build();
-            _topic = configuration["Kafka:TelemetryTopic"];
+            _telemetryTopic = configuration["Kafka:RoboticArmTelemetry"];
+            _exceptionsTopic = configuration["Kafka:RoboticArmExceptionsTopic"];
         }
 
         public async Task SendTelemetryDataAsync(CancellationToken cancellationToken)
@@ -31,8 +33,11 @@ namespace RoboticArm
 
             try
             {
-                // Send telemetry data to Kafka
-                var result = await _producer.ProduceAsync(_topic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
+                DeliveryResult<Null, string> result = null;
+                if (telemetryData.Status == "Error")
+                    result = await _producer.ProduceAsync(_telemetryTopic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
+                else
+                    result = await _producer.ProduceAsync(_telemetryTopic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
 
                 // Log telemetry data sent
                 _logger.LogInformation($"Telemetry data sent to Kafka: {telemetryJson}, Offset: {result.Offset}");
