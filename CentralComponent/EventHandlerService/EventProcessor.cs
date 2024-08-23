@@ -14,7 +14,7 @@ public class EventProcessor : IEventProcessor
     public EventProcessor(ILogger<EventProcessor> logger)
     {
         _logger = logger;
-        _bootstrapServers = "localhost:9092"; // Kafka broker address
+        _bootstrapServers = "kafka:9092"; // Kafka broker address
         _topic = "event-topic"; // Kafka topic name
 
         // Define a retry policy with exponential backoff
@@ -81,7 +81,6 @@ public class EventProcessor : IEventProcessor
         // Simulate some asynchronous work
         await Task.Delay(500);
 
-        
     }
 }
 
