@@ -8,7 +8,7 @@ public class StorageConnector : IStorageConnector
 
     public StorageConnector()
     {
-        var channel = GrpcChannel.ForAddress("http://localhost:7000");
+        var channel = GrpcChannel.ForAddress("http://localhost:7001");
         _client = new StorageService.StorageServiceClient(channel);
     }
 

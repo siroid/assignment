@@ -9,7 +9,7 @@ public class EtcdStorageAdapter : IStorageAdapter
 
     public EtcdStorageAdapter()
     {
-        _etcdClient = new EtcdClient("http://localhost:2379"); // Replace with your Etcd server address
+        _etcdClient = new EtcdClient("http://localhost:2378"); // Replace with your Etcd server address
     }
 
     public async Task CreateAsync<T>(string key, T value)

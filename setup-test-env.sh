@@ -8,7 +8,7 @@ while ! docker exec $(docker ps -qf "ancestor=confluentinc/cp-kafka:latest") kaf
 done
 
 # Step 3: Create Kafka Topic
-docker exec $(docker ps -qf "ancestor=confluentinc/cp-kafka:latest") kafka-topics --create --topic robotic-arm-events --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+# docker exec $(docker ps -qf "ancestor=confluentinc/cp-kafka:latest") kafka-topics --create --topic robotic-arm-events --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
 
 # Step 4: Verify Topic Creation
-docker exec $(docker ps -qf "ancestor=confluentinc/cp-kafka:latest") kafka-topics --list --bootstrap-server localhost:9092
+# docker exec $(docker ps -qf "ancestor=confluentinc/cp-kafka:latest") kafka-topics --list --bootstrap-server localhost:9092

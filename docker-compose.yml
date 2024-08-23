@@ -48,8 +48,8 @@ services:
   etcd:
     image: bitnami/etcd:latest
     ports:
-      - "2379:2379"  # Etcd client communication port
-      - "2380:2380"  # Etcd peer communication port
+      - "2378:2379"  # Etcd client communication port
+      - "2377:2380"  # Etcd peer communication port
     environment:
       - ALLOW_NONE_AUTHENTICATION=yes
       - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
@@ -83,8 +83,8 @@ services:
 
   taskcoordinator:
     build:
-      context: ./CentralComponent/TaskCoordinatorService
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: CentralComponent/TaskCoordinatorService/Dockerfile
     image: taskcoordinatorservice:latest
     container_name: taskcoordinatorservice
     environment:
@@ -95,14 +95,12 @@ services:
       - "5005:5005" # Map debugging port
     depends_on:
       - kafka
-    networks:
-      - mynetwork
     command: ["dotnet", "TaskCoordinatorService.dll", "--urls", "http://0.0.0.0:80"]
 
   monitoring:
     build:
-      context: ./CentralComponent/MonitoringService
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: CentralComponent/MonitoringService/Dockerfile
     image: monitoringservice:latest
     container_name: monitoringservice
     environment:
@@ -113,15 +111,13 @@ services:
       - "5006:5005" # Map debugging port
     depends_on:
       - taskcoordinator
-    networks:
-      - mynetwork
     command: ["dotnet", "MonitoringService.dll", "--urls", "http://0.0.0.0:80"]
 
   event-handler-service:
     image: event-handler-service
     build:
-      context: ./CentralComponent/EventHandlerService  # Path to the directory containing the Dockerfile
-      dockerfile: Dockerfile  # Name of the Dockerfile (adjust if different)
+      context: ./
+      dockerfile: CentralComponent/EventHandlerService/Dockerfile  # Name of the Dockerfile (adjust if different)
     depends_on:
       - taskcoordinator
     ports:
@@ -133,8 +129,8 @@ services:
   storage-middleware-api:
     image: storage-middleware-api
     build:
-      context: ./StorageMiddlewareApi
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: StorageMiddleware/StorageMiddlewareApi/Dockerfile
     depends_on:
       - redis
       - ignite
@@ -142,7 +138,7 @@ services:
       - etcd
       - couchbase
     ports:
-      - "7000:80"
+      - "7001:80"
     restart: always
     environment:
       SELECTED_PERSISTED_STORAGE: cassandra

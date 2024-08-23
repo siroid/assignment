@@ -1,19 +1,27 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+# Use the .NET SDK image for building and running the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 5005
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# Set environment variables
+ENV ASPNETCORE_URLS=http://+:80
+ARG configuration=Release
+
+# Copy the project file and restore dependencies
 WORKDIR /src
-COPY ["StorageMiddlewareApi/StorageMiddlewareApi.csproj", "StorageMiddlewareApi/"]
-RUN dotnet restore "StorageMiddlewareApi/StorageMiddlewareApi.csproj"
+COPY ["StorageMiddleware/StorageMiddlewareApi/StorageMiddlewareApi.csproj", "StorageMiddleware/StorageMiddlewareApi/"]
+RUN dotnet restore "StorageMiddleware/StorageMiddlewareApi/StorageMiddlewareApi.csproj"
+
+# Copy all the source code and build the application
 COPY . .
-WORKDIR "/src/StorageMiddlewareApi"
-RUN dotnet build "StorageMiddlewareApi.csproj" -c Release -o /app/build
+# Copy and restore all dependent projects
+COPY StorageMiddleware/CacheProvider StorageMiddleware/CacheProvider
+COPY StorageMiddleware/StorageAdapters StorageMiddleware/StorageAdapters
 
-FROM build AS publish
-RUN dotnet publish "StorageMiddlewareApi.csproj" -c Release -o /app/publish
+# Publish the application to the publish directory
+RUN dotnet publish "StorageMiddleware/StorageMiddlewareApi/StorageMiddlewareApi.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# Set the working directory to the publish folder and run the application
+WORKDIR /app/publish
 ENTRYPOINT ["dotnet", "StorageMiddlewareApi.dll"]

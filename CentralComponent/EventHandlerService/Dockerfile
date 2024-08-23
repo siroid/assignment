@@ -1,31 +1,24 @@
-# Stage 1: Build the application
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+# The context for this Dockerfile is ../.. (two folders outside)
 
-# Copy the project file and restore any dependencies
-COPY ["EventHandlerService.csproj", "./"]
-RUN dotnet restore "./EventHandlerService.csproj"
-
-# Copy the remaining source code and build the application
-COPY . .
-RUN dotnet build "EventHandlerService.csproj" -c Release -o /app/build
-
-# Stage 2: Publish the application
-FROM build AS publish
-RUN dotnet publish "EventHandlerService.csproj" -c Release -o /app/publish
-
-# Stage 3: Run the application
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
 
 # Install the .NET Core debugger (vsdbg)
-RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+RUN apt-get update && apt-get install -y unzip curl && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 
-# Copy the published application to the final image
-COPY --from=publish /app/publish .
+# Copy the project file and restore any dependencies
+COPY ["CentralComponent/EventHandlerService/EventHandlerService.csproj", "CentralComponent/EventHandlerService/"]
+RUN dotnet restore "CentralComponent/EventHandlerService/EventHandlerService.csproj"
 
-# Expose any ports the application needs to communicate through, if applicable
-# EXPOSE 80
+# Copy the remaining source code and build the application
+COPY . .
+COPY StorageMiddleware/StorageConnector/ StorageMiddleware/StorageConnector/
+RUN dotnet publish "CentralComponent/EventHandlerService/EventHandlerService.csproj" -c Release -o /app/publish
 
-# Set the entry point for the application
+WORKDIR /app/publish
+
+# For remote debugging
+EXPOSE 9229  
+
 ENTRYPOINT ["dotnet", "EventHandlerService.dll"]
