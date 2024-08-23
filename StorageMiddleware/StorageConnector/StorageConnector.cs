@@ -14,28 +14,28 @@ public class StorageConnector : IStorageConnector
 
     public async Task<string> GetDataAsync(string id)
     {
-        var request = new GetDataRequest { Id = id };
+        var request = new GetDataRequest { Key = id };
         var response = await _client.GetDataAsync(request);
-        return response.Data;
+        return response.Value;
     }
 
     public async Task<bool> CreateDataAsync(string data)
     {
-        var request = new CreateDataRequest { Data = data };
+        var request = new CreateDataRequest { Value = data };
         var response = await _client.CreateDataAsync(request);
         return response.Success;
     }
 
     public async Task<bool> UpdateDataAsync(string id, string data)
     {
-        var request = new UpdateDataRequest { Id = id, Data = data };
+        var request = new UpdateDataRequest { Key = id, Value = data };
         var response = await _client.UpdateDataAsync(request);
         return response.Success;
     }
 
     public async Task<bool> DeleteDataAsync(string id)
     {
-        var request = new DeleteDataRequest { Id = id };
+        var request = new DeleteDataRequest { Key = id };
         var response = await _client.DeleteDataAsync(request);
         return response.Success;
     }

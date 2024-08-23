@@ -1,10 +1,8 @@
-// CouchbaseStorageAdapter.cs
-using System;
-using System.Threading.Tasks;
 using Couchbase;
+using Couchbase.Core.Exceptions.KeyValue;
 using Couchbase.KeyValue;
-using Couchbase.Management.Buckets;
 using Newtonsoft.Json;
+using StorageAdapters;
 
 public class CouchbaseStorageAdapter : IStorageAdapter
 {

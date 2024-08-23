@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Cassandra;
 using Newtonsoft.Json;
+using StorageAdapters;
 
 public class CassandraStorageAdapter : IStorageAdapter
 {

@@ -1,9 +1,6 @@
-using System;
-using System.Text;
-using System.Threading.Tasks;
 using dotnet_etcd;
-using Google.Protobuf;
 using Newtonsoft.Json;
+using StorageAdapters;
 
 public class EtcdStorageAdapter : IStorageAdapter
 {

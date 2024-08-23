@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 
+namespace StorageAdapters;
+
 public interface IStorageAdapter : IDisposable
 {
     Task CreateAsync<T>(string key, T value);
