@@ -1,32 +1,25 @@
-# Stage 1: Build the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Install the .NET Core debugger (vsdbg)
+RUN apt-get update && apt-get install -y unzip curl && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+
 # Copy the project file and restore any dependencies
-COPY ["RoboticArmService.csproj", "./"]
-RUN dotnet restore "./RoboticArmService.csproj"
+COPY ["RoboticArm/RoboticArmService.csproj", "RoboticArm/"]
+RUN dotnet restore "RoboticArm/RoboticArmService.csproj"
 
 # Copy the remaining source code and build the application
 COPY . .
-RUN dotnet build "RoboticArmService.csproj" -c Release -o /app/build
 
-# Stage 2: Publish the application
-FROM build AS publish
-RUN dotnet publish "RoboticArmService.csproj" -c Release -o /app/publish
+RUN dotnet publish "RoboticArm/RoboticArmService.csproj" -c Release -o /app/publish
 
-# Stage 3: Run the application
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
-WORKDIR /app
+WORKDIR /app/publish
 
 # Install the .NET Core debugger (vsdbg)
 RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+# For remote debugging
+EXPOSE 9229  
 
-# Copy the published application to the final image
-COPY --from=publish /app/publish .
-
-# Expose any ports the application needs to communicate through, if applicable
-# EXPOSE 80
-
-# Set the entry point for the application
 ENTRYPOINT ["dotnet", "RoboticArmService.dll"]
 

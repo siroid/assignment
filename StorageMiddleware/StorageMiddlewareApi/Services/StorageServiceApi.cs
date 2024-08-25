@@ -8,15 +8,19 @@ public class StorageServiceApi : StorageService.StorageServiceBase
 {
     private readonly IStorageAdapter storageAdapter;
     private readonly ICacheProvider cacheProvider;
+    private readonly ILogger<StorageServiceApi> logger;
 
-    public StorageServiceApi(IStorageAdapter storageAdapter, ICacheProvider cacheProvider)
+    public StorageServiceApi(ILogger<StorageServiceApi> logger, IStorageAdapter storageAdapter, ICacheProvider cacheProvider)
     {
+        this.logger = logger;
         this.storageAdapter = storageAdapter;
         this.cacheProvider = cacheProvider;
     }
 
     public override async Task<GetDataResponse> GetData(GetDataRequest request, ServerCallContext context)
     {
+        logger.LogInformation($"GetData call: key - {request.Key}");
+
         if (string.IsNullOrEmpty(request.Key))
             return new GetDataResponse { Value = "There is no data with specific key", Found = false };
 

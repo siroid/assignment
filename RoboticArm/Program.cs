@@ -1,5 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using RoboticArm;
 
 namespace RoboticArmService
 {
@@ -14,7 +13,9 @@ namespace RoboticArmService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services.AddHostedService<RoboticArmWorker>();
+                    services.AddSingleton<ITaskHandler, TaskHandler>();
+                    services.AddSingleton<ITelemetryService, TelemetryService>();
                 });
     }
 }

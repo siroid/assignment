@@ -7,7 +7,7 @@ namespace RoboticArm
         private readonly ILogger<TelemetryService> _logger;
         private readonly IProducer<Null, string> _producer;
         private readonly string _telemetryTopic;
-        private readonly string _exceptionsTopic;
+        private readonly string _emergencyTopic;
 
         public TelemetryService(ILogger<TelemetryService> logger, IConfiguration configuration)
         {
@@ -15,12 +15,12 @@ namespace RoboticArm
 
             var config = new ProducerConfig
             {
-                BootstrapServers = configuration["Kafka:BootstrapServers"]
+                BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_BROKER")
             };
 
             _producer = new ProducerBuilder<Null, string>(config).Build();
-            _telemetryTopic = configuration["Kafka:RoboticArmTelemetry"];
-            _exceptionsTopic = configuration["Kafka:RoboticArmExceptionsTopic"];
+            _telemetryTopic = Environment.GetEnvironmentVariable("KAFKA_TELEMETRY_TOPIC");
+            _emergencyTopic = Environment.GetEnvironmentVariable("KAFKA_EMERGENCY_TOPIC");
         }
 
         public async Task SendTelemetryDataAsync(CancellationToken cancellationToken)
@@ -35,22 +35,18 @@ namespace RoboticArm
             {
                 DeliveryResult<Null, string> result = null;
                 if (telemetryData.Status == "Error")
-                    result = await _producer.ProduceAsync(_telemetryTopic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
+                {
+                    result = await _producer.ProduceAsync(_emergencyTopic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
+                    _logger.LogError($"Error detected in telemetry data: {telemetryJson}");
+                }
                 else
+                {
                     result = await _producer.ProduceAsync(_telemetryTopic, new Message<Null, string> { Value = telemetryJson }, cancellationToken);
+                    _logger.LogWarning($"Regular telemetry data: {telemetryJson}");
+                }
 
                 // Log telemetry data sent
                 _logger.LogInformation($"Telemetry data sent to Kafka: {telemetryJson}, Offset: {result.Offset}");
-
-                // Log warning or error based on telemetry data
-                if (telemetryData.Status == "Error")
-                {
-                    _logger.LogError($"Error detected in telemetry data: {telemetryJson}");
-                }
-                else if (telemetryData.Status == "Warning")
-                {
-                    _logger.LogWarning($"Warning detected in telemetry data: {telemetryJson}");
-                }
             }
             catch (ProduceException<Null, string> e)
             {

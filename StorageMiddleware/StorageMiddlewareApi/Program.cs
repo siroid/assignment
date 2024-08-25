@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 namespace StorageMiddlewareApi; 
 
 public class Program
@@ -11,6 +13,13 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<StorageMiddlewareApi.Startup>();
+                webBuilder.ConfigureKestrel(options =>
+                {
+                    options.ListenAnyIP(80, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2; // Support both HTTP/1.1 and HTTP/2
+                    });
+                });
+                webBuilder.UseStartup<Startup>();
             });
 }

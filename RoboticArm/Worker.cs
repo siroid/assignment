@@ -36,6 +36,7 @@ public class Worker : BackgroundService
     {
         _producer.Flush(cancellationToken);
         _producer.Dispose();
+        
         await base.StopAsync(cancellationToken);
     }
 }

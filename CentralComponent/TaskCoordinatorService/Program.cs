@@ -15,7 +15,7 @@ public class Program
                 services.AddSingleton<IMessageBroker>(sp =>
                     new KafkaMessageBroker(
                         sp.GetRequiredService<ILogger<KafkaMessageBroker>>(),
-                        "localhost:9092", // Broker list
+                        "kafka:9092", // Broker list
                         "task-topic"));   // Kafka topic
             });
 }

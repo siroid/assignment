@@ -1,15 +1,18 @@
 # Use the .NET SDK image for building and running the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
-WORKDIR /app
+WORKDIR /src
 EXPOSE 80
 EXPOSE 5005
+
+# Install the .NET Core debugger (vsdbg)
+RUN apt-get update && apt-get install -y unzip curl && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 
 # Set environment variables
 ENV ASPNETCORE_URLS=http://+:80
 ARG configuration=Release
 
 # Copy the project file and restore dependencies
-WORKDIR /src
 COPY ["StorageMiddleware/StorageMiddlewareApi/StorageMiddlewareApi.csproj", "StorageMiddleware/StorageMiddlewareApi/"]
 RUN dotnet restore "StorageMiddleware/StorageMiddlewareApi/StorageMiddlewareApi.csproj"
 
