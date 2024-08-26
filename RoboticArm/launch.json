@@ -6,15 +6,15 @@
     "appFolder": "${workspaceFolder}",
     "appProject": "${workspaceFolder}/EventHandlerService.csproj",
     "dockerBuild": {
-        "tag": "event-handler-service:dev",
+        "tag": "event-handler:dev",
         "dockerfile": "${workspaceFolder}/Dockerfile",
         "context": "${workspaceFolder}",
         "target": "base",
         "pull": true
     },
     "dockerRun": {
-        "containerName": "event-handler-service-1",
-        "image": "event-handler-service:dev",
+        "containerName": "event-handler-1",
+        "image": "event-handler:dev",
         "env": {
             "ASPNETCORE_ENVIRONMENT": "Development"
         },
@@ -28,7 +28,7 @@
     "pipeTransport": {
         "pipeCwd": "${workspaceFolder}",
         "pipeProgram": "docker",
-        "pipeArgs": ["exec", "-i", "event-handler-service", "sh", "-c"],
+        "pipeArgs": ["exec", "-i", "event-handler", "sh", "-c"],
         "debuggerPath": "/vsdbg/vsdbg",
         "quoteArgs": false
     },

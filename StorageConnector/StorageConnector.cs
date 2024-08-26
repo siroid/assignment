@@ -1,15 +1,29 @@
-﻿using Grpc.Net.Client;
+﻿using System.Security.Authentication;
+using Grpc.Net.Client;
 
 namespace StorageConnector;
 
-public class StorageConnector : IStorageConnector
+public class StorageConnector : IStorageConnector, IDisposable
 {
     private readonly StorageService.StorageServiceClient _client;
+    private readonly HttpClient _httpClient;
 
     public StorageConnector()
     {
         var grpcServerAddress = Environment.GetEnvironmentVariable("GRPC_SERVER_ADDRESS");
-        var channel = GrpcChannel.ForAddress(grpcServerAddress);
+
+        var httpClientHandler = new HttpClientHandler();
+        httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        httpClientHandler.SslProtocols = SslProtocols.Tls12;
+        _httpClient = new HttpClient(httpClientHandler)
+        {
+            DefaultRequestVersion = new Version(2, 0)   // Ensure HTTP/2
+        };
+
+        var channel = GrpcChannel.ForAddress(grpcServerAddress, new GrpcChannelOptions
+        {
+            HttpClient = _httpClient
+        });
 
         _client = new StorageService.StorageServiceClient(channel);
     }
@@ -40,5 +54,10 @@ public class StorageConnector : IStorageConnector
         var request = new CreateDataRequest { Key = key, Value = value };
         var response = await _client.CreateDataAsync(request);
         return response.Success;
+    }
+
+    public void Dispose()
+    {
+        _httpClient.Dispose();
     }
 }

@@ -80,7 +80,7 @@ services:
     networks:
       - my_network
 
-  robotic-arm-service:
+  robotic-arm-service-1:
     image: robotic-arm-service
     build:
       context: ./ # Path to the directory containing the Dockerfile
@@ -90,10 +90,52 @@ services:
     ports:
       - "8080:80"  # Adjust the port mapping as needed
     environment:
-      KAFKA_CONSUMER_GROUP_ID: consumer-group
+      ARM_ID: 1
       KAFKA_TELEMETRY_TOPIC: telemetry-topic
       KAFKA_EMERGENCY_TOPIC: emergency-topic
+      KAFKA_TASKS_TOPIC: robotic-arm-tasks-topic-1
       KAFKA_BROKER: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: robotic-arm-1
+    restart: always
+    networks:
+      - my_network
+
+  robotic-arm-service-2:
+    image: robotic-arm-service
+    build:
+      context: ./ # Path to the directory containing the Dockerfile
+      dockerfile: RoboticArm/Dockerfile  # Name of the Dockerfile (adjust if different)
+    depends_on:
+      - taskcoordinator
+    ports:
+      - "8080:80"  # Adjust the port mapping as needed
+    environment:
+      ARM_ID: 2
+      KAFKA_TELEMETRY_TOPIC: telemetry-topic
+      KAFKA_EMERGENCY_TOPIC: emergency-topic
+      KAFKA_TASKS_TOPIC: robotic-arm-tasks-topic-2
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: robotic-arm-2
+    restart: always
+    networks:
+      - my_network
+
+  robotic-arm-service-3:
+    image: robotic-arm-service
+    build:
+      context: ./ # Path to the directory containing the Dockerfile
+      dockerfile: RoboticArm/Dockerfile  # Name of the Dockerfile (adjust if different)
+    depends_on:
+      - taskcoordinator
+    ports:
+      - "8080:80"  # Adjust the port mapping as needed
+    environment:
+      ARM_ID: 3
+      KAFKA_TELEMETRY_TOPIC: telemetry-topic
+      KAFKA_EMERGENCY_TOPIC: emergency-topic
+      KAFKA_TASKS_TOPIC: robotic-arm-tasks-topic-3
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: robotic-arm-3
     restart: always
     networks:
       - my_network
@@ -105,8 +147,9 @@ services:
       dockerfile: CentralComponent/TaskCoordinatorService/Dockerfile
     container_name: taskcoordinatorservice
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      KAFKA_CONSUMER_GROUP_ID: task-coordinator-consumer-group    
     ports:
       - "5001:80"   # Map HTTP port for web traffic
       - "5005:5005" # Map debugging port
@@ -123,29 +166,33 @@ services:
       dockerfile: CentralComponent/MonitoringService/Dockerfile
     container_name: monitoringservice
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    ports:
-      - "5002:80"   # Map HTTP port for web traffic
-      - "5006:5005" # Map debugging port
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      KAFKA_CONSUMER_GROUP_ID: monitoring-consumer-group    
+      KAFKA_EMERGENCY_TOPIC: emergency-topic
+      KAFKA_TELEMETRY_TOPIC: telemetry-topic
+      KAFKA_TASKCOORDINATOR_TOPIC: task-coordinator-topic
+      KAFKA_BROKER: kafka:9092
+      GRPC_SERVER_ADDRESS: http://storage-middleware-api:80
     depends_on:
       - taskcoordinator
     command: ["dotnet", "MonitoringService.dll", "--urls", "http://0.0.0.0:80"]
     networks:
       - my_network
 
-  event-handler-service:
-    image: event-handler-service
+  event-handler:
+    image: event-handler
     build:
       context: ./
       dockerfile: CentralComponent/EventHandlerService/Dockerfile  # Name of the Dockerfile (adjust if different)
     depends_on:
       - taskcoordinator
-    ports:
-      - "8081:80"  # Adjust the port mapping as needed
     environment:
       GRPC_SERVER_ADDRESS: http://storage-middleware-api:80
       KAFKA_BROKER: kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: monitoring-consumer-group    
+      KAFKA_TELEMETRY_TOPIC: telemetry-topic
+      KAFKA_EMERGENCY_TOPIC: emergency-topic
     restart: always
     networks:
       - my_network

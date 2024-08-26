@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\StorageConnector\StorageConnector.csproj" />
+    <ProjectReference Include="..\..\DataContracts\DataContracts.csproj" />
   </ItemGroup>
 </Project>

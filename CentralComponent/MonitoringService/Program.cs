@@ -1,17 +1,11 @@
-namespace MonitoringService;
+using MonitoringService;
+using StorageConnector;
 
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+var builder = Host.CreateApplicationBuilder(args);
+builder.Services.AddHostedService<MonitoringWorker>();
+builder.Services.AddSingleton<IMonitoringService, MonitoringService.MonitoringService>();
+builder.Services.AddSingleton<IStorageConnector, StorageConnector.StorageConnector>();
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureServices((hostContext, services) =>
-            {
-                services.AddHostedService<MonitoringWorker>();
-                services.AddSingleton<IMonitoringService, RoboticArmMonitoringService>();
-            });
-}
+var host = builder.Build();
+
+host.Run();

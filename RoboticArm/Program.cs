@@ -13,9 +13,12 @@ namespace RoboticArmService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<RoboticArmWorker>();
+                    services.AddHostedService<TelemetryWorker>();
+                    services.AddHostedService<TaskHandlerWorker>();
+                    
                     services.AddSingleton<ITaskHandler, TaskHandler>();
                     services.AddSingleton<ITelemetryService, TelemetryService>();
+                    services.AddSingleton<IAppState, AppState>();
                 });
     }
 }

@@ -1,15 +1,13 @@
 namespace RoboticArm;
 
-public class RoboticArmWorker : BackgroundService
+public class TelemetryWorker : BackgroundService
 {
-    private readonly ILogger<RoboticArmWorker> _logger;
-    private readonly ITaskHandler _taskHandler;
+    private readonly ILogger<TelemetryWorker> _logger;
     private readonly ITelemetryService _telemetryService;
 
-    public RoboticArmWorker(ILogger<RoboticArmWorker> logger, ITaskHandler taskHandler, ITelemetryService telemetryService)
+    public TelemetryWorker(ILogger<TelemetryWorker> logger, ITelemetryService telemetryService)
     {
         _logger = logger;
-        _taskHandler = taskHandler;
         _telemetryService = telemetryService;
     }
 
@@ -22,13 +20,6 @@ public class RoboticArmWorker : BackgroundService
             try
             {
                 _logger.LogInformation("Robotic Arm Service is checking for new tasks.");
-
-                // Get and handle the next task
-                var task = await _taskHandler.GetNextTaskAsync(stoppingToken);
-                if (task != null)
-                {
-                    await _taskHandler.HandleTaskAsync(task, stoppingToken);
-                }
 
                 // Send telemetry data
                 await _telemetryService.SendTelemetryDataAsync(stoppingToken);
