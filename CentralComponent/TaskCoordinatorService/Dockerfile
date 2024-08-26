@@ -19,5 +19,6 @@ RUN dotnet publish "CentralComponent/TaskCoordinatorService/TaskCoordinatorServi
 WORKDIR /app/publish
 EXPOSE 80
 EXPOSE 5005
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "TaskCoordinatorService.dll"]

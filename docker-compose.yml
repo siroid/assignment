@@ -149,9 +149,12 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
+      KAFKA_BROKER: kafka:9092
       KAFKA_CONSUMER_GROUP_ID: task-coordinator-consumer-group    
+      KAFKA_TASKS_TOPIC: robotic-arm-tasks-topic-
     ports:
       - "5001:80"   # Map HTTP port for web traffic
+      - "5000:5000" 
       - "5005:5005" # Map debugging port
     depends_on:
       - kafka

@@ -24,7 +24,7 @@ public class TaskCoordinatorWorker : BackgroundService
                 if (newTask != null)
                 {
                     _logger.LogInformation($"Assigning task {newTask.Id} to a robotic arm.");
-                    await _messageBroker.SendTaskAsync(newTask, stoppingToken);
+                    await _messageBroker.SendTaskAsync(newTask, stoppingToken, newTask.RoboticArmId);
                     _logger.LogInformation($"Task {newTask.Id} assigned.");
                 }
                 else
@@ -45,6 +45,6 @@ public class TaskCoordinatorWorker : BackgroundService
 
     private TaskModel FetchNewTask()
     {
-        return new TaskModel { Id = Guid.NewGuid().ToString(), Description = "Sample Task" };
+        return new TaskModel { Id = Guid.NewGuid(), TaskType=1, RoboticArmId=1};
     }
 }

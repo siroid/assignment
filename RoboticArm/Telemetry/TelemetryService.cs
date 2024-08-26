@@ -6,15 +6,16 @@ namespace RoboticArm;
 public class TelemetryService : ITelemetryService, IDisposable
 {
     private readonly ILogger<TelemetryService> _logger;
+    private readonly IAppState _appState;
     private readonly IProducer<Null, string> _producer;
     private readonly string _telemetryTopic;
     private readonly string _emergencyTopic;
     private readonly int _armId;
 
-    public TelemetryService(ILogger<TelemetryService> logger, IConfiguration configuration)
+    public TelemetryService(ILogger<TelemetryService> logger, IAppState appState)
     {
         _logger = logger;
-
+        _appState = appState;
         var config = new ProducerConfig
         {
             BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_BROKER")
@@ -29,6 +30,12 @@ public class TelemetryService : ITelemetryService, IDisposable
 
     public async Task SendTelemetryDataAsync(CancellationToken cancellationToken)
     {
+        if (!_appState.IsInitialized)
+        {
+            _logger.LogInformation("Arm is waiting for initializion");
+            return;
+        }
+
         // Generate telemetry data with possible warnings or errors
         var telemetryData = GenerateTelemetryData();
 
